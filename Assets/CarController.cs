@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CarController : MonoBehaviour
+public class GamepadValue : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
