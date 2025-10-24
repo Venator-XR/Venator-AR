@@ -4,13 +4,14 @@ using UnityEngine.InputSystem;
 
 public class GamepadValue : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public Vector2 value = Vector2.zero;
+    [SerializeField] float deadZone = 0.3f;
+
     void Start()
     {
-        
+
     }
 
-    // Update is called once per frame
     void Update()
     {
         var gamepad = Gamepad.current;
@@ -20,11 +21,32 @@ public class GamepadValue : MonoBehaviour
             return;
         }
 
-        Vector2 move = gamepad.leftStick.ReadValue();
-        if (move.x > 0 || move.x < 0) {
-            Debug.Log("move x " + move.x);
-        } else if (move.y > 0 || move.y < 0) {
-            Debug.Log("move y " + move.y);
+        // temp value to check deadzone before saving value
+        var temp = gamepad.leftStick.ReadValue();
+
+        // only save x value if greater than deadzone
+        if (temp.x > deadZone || temp.x < -deadZone)
+        {
+            value = new Vector2(temp.x, temp.y);
         }
+        else if (temp.x > 0.5 && temp.x < 0.8)
+        {
+            value = new Vector2(temp.x, 0.6f);
+        }
+        else if (temp.x < -0.5 && temp.x < -0.8)
+        {
+            value = new Vector2(temp.x, 0.6f);
+        }
+        else
+        {
+            value = new Vector2(0f, temp.y);
+        }
+
+        // DEBUGGING -------------------------------
+        // if (temp.x > 0 || value.x < 0) {
+        //     Debug.Log("value x " + value.x);
+        // } else if (value.y > 0 || value.y < 0) {
+        //     Debug.Log("value y " + value.y);
+        // }
     }
-}   
+}
