@@ -1148,6 +1148,14 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1755667999800382164, guid: 0a7c8ccf714273c489e9f0c5ac63f325, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.767
+      objectReference: {fileID: 0}
+    - target: {fileID: 1755667999800382164, guid: 0a7c8ccf714273c489e9f0c5ac63f325, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.546
+      objectReference: {fileID: 0}
     - target: {fileID: 1849073529342132406, guid: 0a7c8ccf714273c489e9f0c5ac63f325, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1187,6 +1195,10 @@ PrefabInstance:
     - target: {fileID: 3666794580363320404, guid: 0a7c8ccf714273c489e9f0c5ac63f325, type: 3}
       propertyPath: m_Name
       value: ObjectViewerScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916609616185058507, guid: 0a7c8ccf714273c489e9f0c5ac63f325, type: 3}
+      propertyPath: m_Name
+      value: SliderCanvas
       objectReference: {fileID: 0}
     - target: {fileID: 7626760934879258580, guid: 0a7c8ccf714273c489e9f0c5ac63f325, type: 3}
       propertyPath: m_AnchorMax.x
