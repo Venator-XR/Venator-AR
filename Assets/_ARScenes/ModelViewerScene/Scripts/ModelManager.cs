@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ControladorModelos : MonoBehaviour
 {
@@ -9,9 +10,16 @@ public class ControladorModelos : MonoBehaviour
 
     private GameObject active;
 
+
+    [SerializeField] Slider rotateSlider;
+    [SerializeField] Slider scaleSlider;
+    RotateOrScale rotateOrScale;
+
+
     void Start()
     {
         ActivateModel(coche);
+        rotateOrScale = active.GetComponent<RotateOrScale>();
     }
 
     public void ActivateModel(GameObject modelo)
@@ -23,5 +31,31 @@ public class ControladorModelos : MonoBehaviour
 
         modelo.SetActive(true);
         active = modelo;
+        rotateOrScale = active.GetComponent<RotateOrScale>();
+
+        rotateSlider.value = 0;
+        scaleSlider.value = 0;
+        rotateOrScale.SliderRotate(0);
+        rotateOrScale.SliderScale(1);
+    }
+
+    public void RotateModel(float value)
+    {
+
+        if (active == coche || active == linterna)
+        {
+            value += 180;
+        }
+        else if (active == pistola)
+        {
+            value -= 90;
+        }
+
+        rotateOrScale.SliderRotate(value);
+    }
+    
+    public void ScaleModel(float value)
+    {
+        rotateOrScale.SliderScale(value);
     }
 }

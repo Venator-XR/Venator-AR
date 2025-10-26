@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class manipular : MonoBehaviour
+public class RotateOrScale : MonoBehaviour
 {
     public float rotSpeedTouch = 4f;
     public float rotSpeedMouse = 4f;
@@ -39,8 +39,7 @@ public class manipular : MonoBehaviour
                     if (t0.phase == TouchPhase.Moved)
                     {
                         float rotZ = -t0.deltaPosition.x * rotSpeedTouch; // horizontal drag -> z-rotation
-                        transform.Rotate(0f, 0f, rotZ, Space.World);
-                        KeepZOnly();
+                        transform.Rotate(0f, rotZ, 0f, Space.World);
                     }
                 }
 
@@ -95,7 +94,6 @@ public class manipular : MonoBehaviour
 
             float rotZ = -delta.x * rotSpeedMouse; // horizontal drag -> z-rotation
             transform.Rotate(0f, rotZ, 0f, Space.World);
-            // KeepZOnly();
         }
 
         if (Input.GetMouseButtonUp(0))
@@ -114,14 +112,6 @@ public class manipular : MonoBehaviour
 
             transform.localScale = new Vector3(targetSize, targetSize, targetSize);
         }
-    }
-
-    private void KeepZOnly()
-    {
-        Vector3 e = transform.eulerAngles;
-        e.x = 0f;
-        e.y = 0f;
-        transform.eulerAngles = e;
     }
 
     private float ClampSize(float sizeIn)
@@ -160,5 +150,16 @@ public class manipular : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public void SliderRotate(float value)
+    {
+        transform.rotation = Quaternion.Euler(-90f, 0f, value);
+    }
+
+    public void SliderScale(float value)
+    {
+        float scale = Mathf.Lerp(baseScale * minScaleFactor, baseScale * maxScaleFactor, value / 2f);
+        transform.localScale = new Vector3(scale, scale, scale);
     }
 }
