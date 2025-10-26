@@ -5,23 +5,23 @@ public class ControladorModelos : MonoBehaviour
     public GameObject coche;
     public GameObject vampiro;
     public GameObject pistola;
-    public GameObject castillo;
+    public GameObject linterna;
 
-    private GameObject activo;
+    private GameObject active;
 
     void Start()
     {
-        MostrarModelo(coche); // Ä¬ÈÏÏÔÊ¾Æû³µ
+        ActivateModel(coche);
     }
 
-    public void MostrarModelo(GameObject modelo)
+    public void ActivateModel(GameObject modelo)
     {
         coche.SetActive(false);
         vampiro.SetActive(false);
         pistola.SetActive(false);
-        castillo.SetActive(false);
+        linterna.SetActive(false);
 
         modelo.SetActive(true);
-        activo = modelo;
+        active = modelo;
     }
 }
