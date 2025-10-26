@@ -28,15 +28,13 @@ public class ControladorModelos : MonoBehaviour
         vampiro.SetActive(false);
         pistola.SetActive(false);
         linterna.SetActive(false);
+        
+        rotateSlider.value = 0;
+        scaleSlider.value = 1;
 
         modelo.SetActive(true);
         active = modelo;
         rotateOrScale = active.GetComponent<RotateOrScale>();
-
-        rotateSlider.value = 0;
-        scaleSlider.value = 0;
-        rotateOrScale.SliderRotate(0);
-        rotateOrScale.SliderScale(1);
     }
 
     public void RotateModel(float value)
