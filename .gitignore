@@ -99,3 +99,7 @@ InitTestScene*.unity*
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
 
 Packages/com.ptc.vuforia.engine-11.4.4.tgz
+
+Assets/StreamingAssets/Vuforia/
+Assets/Editor/Vuforia/
+QCAR/
