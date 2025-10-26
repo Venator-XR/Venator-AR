@@ -168,7 +168,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &60900523
 Transform:
   m_ObjectHideFlags: 0
@@ -292,7 +292,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &92518857
 Transform:
   m_ObjectHideFlags: 0
@@ -896,13 +896,13 @@ MonoBehaviour:
   PreviewVisible: 1
   RuntimeOcclusion: 0
   RuntimeCollider: 0
-  mTrackableName: bat
+  mTrackableName: coffin
   mInitializedInEditor: 1
   mDataSetPath: Vuforia/Venator.xml
-  mAspectRatio: 0.665517
+  mAspectRatio: 0.749625
   mImageTargetType: 0
   mWidth: 1
-  mHeight: 0.665517
+  mHeight: 0.749625
   mRuntimeTexture: {fileID: 0}
   mMotionHint: 1
   mTrackingOptimization: 0
@@ -922,7 +922,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mObserverBehaviour: {fileID: 995060518}
   mHiddenRoot: {fileID: 0}
-  mTargetName: bat
+  mTargetName: coffin
   mDatasetName: Vuforia/Venator.xml
   mCastedBehaviour: {fileID: 995060518}
   mMeshFilter: {fileID: 0}
