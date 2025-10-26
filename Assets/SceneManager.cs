@@ -4,6 +4,8 @@ using UnityEngine;
 public class SceneManager : MonoBehaviour
 {
     [SerializeField] List<GameObject> scenes;
+    [SerializeField] GameObject mainMenuScene;
+    [SerializeField] GameObject menuBtnCanvas;
 
     void Start()
     {
@@ -12,8 +14,8 @@ public class SceneManager : MonoBehaviour
             Debug.LogError("no scenes assigned in the inspector");
         }
     }
-    
-    public void ChangeScene(GameObject scene)
+
+    public void SetScene(GameObject scene)
     {
         if (!scenes.Contains(scene))
         {
@@ -25,6 +27,18 @@ public class SceneManager : MonoBehaviour
             s.SetActive(false);
         }
 
+        mainMenuScene.SetActive(false);
         scene.SetActive(true);
+        menuBtnCanvas.SetActive(true);
+    }
+
+    public void BackToMenu()
+    {
+        menuBtnCanvas.SetActive(false);
+        foreach (GameObject s in scenes)
+        {
+            s.SetActive(false);
+        }
+        mainMenuScene.SetActive(true);
     }
 }
