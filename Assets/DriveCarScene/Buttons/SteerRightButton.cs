@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class SteerRightButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class SteerRightButton : MonoBehaviour
 {
     CarController carController;
 
@@ -19,22 +19,22 @@ public class SteerRightButton : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     {
         if (Input.GetKeyDown(KeyCode.D))
         {
-            OnPointerDown(null);
+            OnPress();
             carController.SteerRight();
         }
         else if (Input.GetKeyUp(KeyCode.D))
         {
-            OnPointerUp(null);
+            OnRelease();
             carController.SteerReset();
         }
     }
 
-    public void OnPointerDown(PointerEventData eventData)
+    public void OnPress()
     {
         carController.SteerRight();
     }
 
-    public void OnPointerUp(PointerEventData eventData)
+    public void OnRelease()
     {
         carController.SteerReset();
     }

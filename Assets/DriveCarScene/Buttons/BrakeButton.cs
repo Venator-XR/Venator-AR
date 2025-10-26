@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class BrakeButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class BrakeButton : MonoBehaviour
 {
     CarController carController;
 
@@ -19,22 +19,22 @@ public class BrakeButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         if (Input.GetKeyDown(KeyCode.S))
         {
-            OnPointerDown(null);
+            OnPress();
             carController.Brake();
         }
         else if (Input.GetKeyUp(KeyCode.S))
         {
-            OnPointerUp(null);
+            OnRelease();
             carController.AccelReset();
         }
     }
 
-    public void OnPointerDown(PointerEventData eventData)
+    public void OnPress()
     {
         carController.Brake();
     }
 
-    public void OnPointerUp(PointerEventData eventData)
+    public void OnRelease()
     {
         carController.AccelReset();
     }

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class AcceleratorButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class AcceleratorButton : MonoBehaviour
 {
     CarController carController;
 
@@ -19,22 +19,22 @@ public class AcceleratorButton : MonoBehaviour, IPointerDownHandler, IPointerUpH
     {
         if (Input.GetKeyDown(KeyCode.W))
         {
-            OnPointerDown(null);
+            OnPress();
             carController.Accelerate();
         }
         else if (Input.GetKeyUp(KeyCode.W))
         {
-            OnPointerUp(null);
+            OnRelease();
             carController.AccelReset();
         }
     }
 
-    public void OnPointerDown(PointerEventData eventData)
+    public void OnPress()
     {
         carController.Accelerate();
     }
 
-    public void OnPointerUp(PointerEventData eventData)
+    public void OnRelease()
     {
         carController.AccelReset();
     }
