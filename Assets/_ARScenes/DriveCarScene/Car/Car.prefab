@@ -1491,7 +1491,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 5277660807525894447}
           m_TargetAssemblyTypeName: SteerRightButton, Assembly-CSharp
-          m_MethodName: OnRealease
+          m_MethodName: OnRelease
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
