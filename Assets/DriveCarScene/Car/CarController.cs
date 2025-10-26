@@ -1,5 +1,6 @@
 using Mono.Cecil.Cil;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class CarController : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class CarController : MonoBehaviour
     float acceleration = 0f;
     float steering = 0f;
 
+    [SerializeField] Transform resetPosition;
+
 
     void Start()
     {
@@ -20,13 +23,18 @@ public class CarController : MonoBehaviour
         if (rb == null)
         {
             Debug.LogError("Rigidbody not found on the GameObject");
+            UnityEditor.EditorApplication.isPlaying = false;
         }
         if (brakeLights == null)
         {
             Debug.LogError("brakeLights not assigned in the inspector");
             UnityEditor.EditorApplication.isPlaying = false;
         }
-
+        if (resetPosition == null)
+        {
+            Debug.LogError("resetPosition not assigned in the inspector");
+            UnityEditor.EditorApplication.isPlaying = false;
+        }
     }
 
     void FixedUpdate()
@@ -45,12 +53,12 @@ public class CarController : MonoBehaviour
         if (accel > 0)
         {
             rb.AddRelativeForce(0f, 0f, accel * speed);
-            brakeLights.intensity = 1;
+            // brakeLights.intensity = 1;
         }
         else if (accel < 0)
         {
             rb.AddRelativeForce(0f, 0f, accel * brakeForce);
-            brakeLights.intensity = 5;
+            // brakeLights.intensity = 5;
         }
 
         rb.AddRelativeTorque(0f, steer * steerForce, 0f);
@@ -92,5 +100,12 @@ public class CarController : MonoBehaviour
     {
         acceleration = 0;
         brakeLights.intensity = 0.1f;
+    }
+
+    public void PositionReset()
+    {
+        transform.position = resetPosition.position;
+        transform.rotation = resetPosition.rotation;
+        rb.Sleep();
     }
 }
