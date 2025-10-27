@@ -3,29 +3,45 @@ using UnityEngine;
 public class FollowCamera : MonoBehaviour
 {
     [SerializeField] Camera currentCamera;
+    [SerializeField] float rotationSpeed = 5f;
+
+    bool isRotating;
 
     void Start()
     {
         if (currentCamera == null)
         {
-            Debug.LogError("camera not assigned in inspector");
+            Debug.LogError("Camera not assigned in inspector");
         }
     }
 
     void Update()
     {
         Vector3 cameraPosition = currentCamera.transform.position;
-
-        // direction to camera
         Vector3 toCamera = cameraPosition - transform.position;
         toCamera.y = 0f; // no vertical rotation
-        
-        // compensate because object is already rotated 180deg sideways
-        toCamera = -toCamera;
+        toCamera = -toCamera; // compensar 180º
+        Vector3 desiredDir = toCamera.normalized;
 
-        if (toCamera.sqrMagnitude > 0.0001f)
+        float angle = Vector3.Angle(transform.forward, desiredDir);
+
+        if (angle > 20f)
         {
-            transform.rotation = Quaternion.LookRotation(toCamera.normalized, Vector3.up);
+            isRotating = true;
+        }
+        else if (angle < 5f)
+        {
+            isRotating = false;
+        }
+
+        if (isRotating)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(desiredDir, Vector3.up);
+            transform.rotation = Quaternion.RotateTowards(
+                transform.rotation,
+                targetRotation,
+                rotationSpeed * Time.deltaTime * 60f // para que sea más uniforme por frame
+            );
         }
     }
 }
