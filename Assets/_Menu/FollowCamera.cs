@@ -3,7 +3,7 @@ using UnityEngine;
 public class FollowCamera : MonoBehaviour
 {
     [SerializeField] Camera currentCamera;
-    [SerializeField] float rotationSpeed = 5f;
+    [SerializeField] float rotationSpeed = 1f;
 
     bool isRotating;
 
