@@ -7,10 +7,13 @@ public class TerrainToggle : MonoBehaviour
 
     void Start()
     {
-        if(terrain == null)
+        if (terrain == null)
         {
             Debug.LogError("terrain not assigned in inspector");
+
+#if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
+#endif
         }
     }
 

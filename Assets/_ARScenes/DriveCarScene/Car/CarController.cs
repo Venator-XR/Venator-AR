@@ -1,4 +1,3 @@
-using Mono.Cecil.Cil;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -23,17 +22,23 @@ public class CarController : MonoBehaviour
         if (rb == null)
         {
             Debug.LogError("Rigidbody not found on the GameObject");
+#if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
+#endif
         }
         if (brakeLights == null)
         {
             Debug.LogError("brakeLights not assigned in the inspector");
+#if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
+#endif
         }
         if (resetPosition == null)
         {
             Debug.LogError("resetPosition not assigned in the inspector");
+#if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
+#endif
         }
     }
 
