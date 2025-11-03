@@ -40,14 +40,14 @@ public class TrapController : MonoBehaviour
     }
 
     /// <summary>
-    /// A coroutine that waits for 0.5 seconds then triggers the animation.
+    /// A coroutine that waits for 1 second then triggers the animation.
     /// </summary>
     private IEnumerator DelayedTrigger()
     {
-        // 1. This line pauses the function for 0.5 seconds.
-        yield return new WaitForSeconds(0.5f); 
-        
-        // 2. This line runs AFTER the 0.5-second delay.
+        // 1. This line pauses the function for 1 second.
+        yield return new WaitForSeconds(1f);
+
+        // 2. This line runs AFTER the 1-second delay.
         animator.SetTrigger(activationTrigger);
     }
 }
