@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6545845663775837939}
   - component: {fileID: 4012113667655846704}
   - component: {fileID: 4698112285843834552}
-  - component: {fileID: 2363079911985791946}
   m_Layer: 0
   m_Name: TrapTarget
   m_TagString: Untagged
@@ -61,7 +60,7 @@ MonoBehaviour:
   mMotionHint: 1
   mTrackingOptimization: 0
   mTrackingOptimizationNeedsUpgrade: 0
-  mPreview: {fileID: 2363079911985791946}
+  mPreview: {fileID: 0}
 --- !u!114 &4698112285843834552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,25 +105,6 @@ MonoBehaviour:
   OnTargetLost:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &2363079911985791946
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6870787552545767747}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1778676317, guid: 8a9a760f95896c34689febc965510927, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mObserverBehaviour: {fileID: 4012113667655846704}
-  mHiddenRoot: {fileID: 0}
-  mTargetName: videomark
-  mDatasetName: Vuforia/Venator.xml
-  mCastedBehaviour: {fileID: 4012113667655846704}
-  mMeshFilter: {fileID: 0}
-  mMeshRenderer: {fileID: 0}
 --- !u!1001 &6162971615805308071
 PrefabInstance:
   m_ObjectHideFlags: 0
