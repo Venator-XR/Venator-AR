@@ -6345,6 +6345,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 381759112}
     m_Modifications:
+    - target: {fileID: 2363079911985791946, guid: ef5928c0c4b409e4ca20e33a46b79208, type: 3}
+      propertyPath: mHiddenRoot
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2363079911985791946, guid: ef5928c0c4b409e4ca20e33a46b79208, type: 3}
+      propertyPath: mMeshFilter
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2363079911985791946, guid: ef5928c0c4b409e4ca20e33a46b79208, type: 3}
+      propertyPath: mMeshRenderer
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6545845663775837939, guid: ef5928c0c4b409e4ca20e33a46b79208, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3
@@ -8613,6 +8625,18 @@ PrefabInstance:
     - target: {fileID: 4763382341242581931, guid: b9eeee0bf20240142af4ec7fb7763fcd, type: 3}
       propertyPath: m_TagString
       value: Car
+      objectReference: {fileID: 0}
+    - target: {fileID: 5097971830746585937, guid: b9eeee0bf20240142af4ec7fb7763fcd, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 5097971830746585937, guid: b9eeee0bf20240142af4ec7fb7763fcd, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 5097971830746585937, guid: b9eeee0bf20240142af4ec7fb7763fcd, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 5872278944799849423, guid: b9eeee0bf20240142af4ec7fb7763fcd, type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
