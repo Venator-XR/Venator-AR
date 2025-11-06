@@ -18,7 +18,6 @@ public class VampireChase : MonoBehaviour
     private Transform playerTransform;
     private Rigidbody rb;
     private bool isChasing = false;
-    private bool hasTriggeredGameOver = false;
 
     void Start()
     {
@@ -43,9 +42,6 @@ public class VampireChase : MonoBehaviour
 
     void Update()
     {
-        // No hacer nada si el juego está pausado (game over)
-        if (Time.timeScale == 0f) return;
-        
         if (playerTransform == null)
         {
             FindPlayer();
@@ -146,44 +142,6 @@ public class VampireChase : MonoBehaviour
             
             // Usar Rigidbody para movimiento suave
             rb.MovePosition(newPosition);
-        }
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        // Verificar si el vampiro toca el coche
-        if (hasTriggeredGameOver) return;
-        
-        if (other.CompareTag(playerTag) || other.name == "Car" || other.GetComponent<CarController>() != null)
-        {
-            hasTriggeredGameOver = true;
-            TriggerGameOver();
-        }
-    }
-    
-    void OnCollisionEnter(Collision collision)
-    {
-        // También detectar colisiones físicas
-        if (hasTriggeredGameOver) return;
-        
-        GameObject other = collision.gameObject;
-        if (other.CompareTag(playerTag) || other.name == "Car" || other.GetComponent<CarController>() != null)
-        {
-            hasTriggeredGameOver = true;
-            TriggerGameOver();
-        }
-    }
-    
-    private void TriggerGameOver()
-    {
-        GameOverManager gameOverManager = GameOverManager.Instance;
-        if (gameOverManager != null)
-        {
-            gameOverManager.GameOver();
-        }
-        else
-        {
-            Debug.LogError("GameOverManager not found! Cannot trigger game over.");
         }
     }
 
