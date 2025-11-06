@@ -368,7 +368,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &188867852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5456,11 +5456,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2575144802124383681, guid: 63f6c6ed723c47b42a75f53b2103f478, type: 3}
   m_PrefabInstance: {fileID: 1616876032}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &488841517 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3720667695954237468, guid: 71f850bd0f4ffee478180babe0474248, type: 3}
-  m_PrefabInstance: {fileID: 1104371329}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &493016797
 GameObject:
   m_ObjectHideFlags: 0
@@ -6418,7 +6413,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6870787552545767747, guid: ef5928c0c4b409e4ca20e33a46b79208, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1008279215}
+      addedObject: {fileID: 1008279217}
   m_SourcePrefab: {fileID: 100100000, guid: ef5928c0c4b409e4ca20e33a46b79208, type: 3}
 --- !u!4 &1008279211 stripped
 Transform:
@@ -6436,7 +6431,7 @@ MonoBehaviour:
   m_Script: {fileID: -1631628248, guid: 8a9a760f95896c34689febc965510927, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1008279215
+--- !u!114 &1008279217
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6744,7 +6739,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6870787552545767747, guid: ef5928c0c4b409e4ca20e33a46b79208, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1294302496}
+      addedObject: {fileID: 1294302498}
   m_SourcePrefab: {fileID: 100100000, guid: ef5928c0c4b409e4ca20e33a46b79208, type: 3}
 --- !u!4 &1294302492 stripped
 Transform:
@@ -6767,7 +6762,7 @@ MonoBehaviour:
   m_Script: {fileID: -1631628248, guid: 8a9a760f95896c34689febc965510927, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1294302496
+--- !u!114 &1294302498
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8138,7 +8133,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1712372328
 Transform:
   m_ObjectHideFlags: 0
@@ -8164,13 +8159,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1883986029}
+  - component: {fileID: 1883986030}
   m_Layer: 0
   m_Name: MinigameScene
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1883986029
 Transform:
   m_ObjectHideFlags: 0
@@ -8183,10 +8179,30 @@ Transform:
   m_LocalPosition: {x: -0.02908742, y: 0.051070027, z: 0.007662298}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 488841517}
+  m_Children: []
   m_Father: {fileID: 995060515}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1883986030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1883986028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59ec303c94c29d84aaad03285b6a6013, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coffinPrefab: {fileID: 6246258214461108899, guid: 66ca7e48281a61c4893177a246f771c1, type: 3}
+  vampirePrefab: {fileID: 5265153787486779277, guid: e0ac558386d74a74795c1d1fd8068875, type: 3}
+  spawnPosition: {x: 0, y: 0, z: 0}
+  coffinSpawnInterval: 5
+  vampireSpawnDelay: 1
+  coffinLifetime: 10
+  autoDetectCarHeight: 1
+  manualSpawnHeight: 0.2
+  spawnRadius: 10
 --- !u!114 &1962040855 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2310179798337937092, guid: 63f6c6ed723c47b42a75f53b2103f478, type: 3}
@@ -8739,6 +8755,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1500315713}
     m_Modifications:
+    - target: {fileID: 3401778498367763077, guid: b9eeee0bf20240142af4ec7fb7763fcd, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3744675850250885991, guid: b9eeee0bf20240142af4ec7fb7763fcd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
