@@ -6418,9 +6418,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6870787552545767747, guid: ef5928c0c4b409e4ca20e33a46b79208, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1008279214}
-    - targetCorrespondingSourceObject: {fileID: 6870787552545767747, guid: ef5928c0c4b409e4ca20e33a46b79208, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1008279215}
   m_SourcePrefab: {fileID: 100100000, guid: ef5928c0c4b409e4ca20e33a46b79208, type: 3}
 --- !u!4 &1008279211 stripped
@@ -6439,25 +6436,6 @@ MonoBehaviour:
   m_Script: {fileID: -1631628248, guid: 8a9a760f95896c34689febc965510927, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1008279214
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 976457207}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1778676317, guid: 8a9a760f95896c34689febc965510927, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mObserverBehaviour: {fileID: 1008279213}
-  mHiddenRoot: {fileID: 0}
-  mTargetName: videomark
-  mDatasetName: Vuforia/Venator.xml
-  mCastedBehaviour: {fileID: 1008279213}
-  mMeshFilter: {fileID: 0}
-  mMeshRenderer: {fileID: 0}
 --- !u!114 &1008279215
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6715,7 +6693,7 @@ PrefabInstance:
     - target: {fileID: 4012113667655846704, guid: ef5928c0c4b409e4ca20e33a46b79208, type: 3}
       propertyPath: mPreview
       value: 
-      objectReference: {fileID: 1294302495}
+      objectReference: {fileID: 0}
     - target: {fileID: 6545845663775837939, guid: ef5928c0c4b409e4ca20e33a46b79208, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5
@@ -6766,13 +6744,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6870787552545767747, guid: ef5928c0c4b409e4ca20e33a46b79208, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1294302497}
-    - targetCorrespondingSourceObject: {fileID: 6870787552545767747, guid: ef5928c0c4b409e4ca20e33a46b79208, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1294302496}
-    - targetCorrespondingSourceObject: {fileID: 6870787552545767747, guid: ef5928c0c4b409e4ca20e33a46b79208, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1294302495}
   m_SourcePrefab: {fileID: 100100000, guid: ef5928c0c4b409e4ca20e33a46b79208, type: 3}
 --- !u!4 &1294302492 stripped
 Transform:
@@ -6795,45 +6767,7 @@ MonoBehaviour:
   m_Script: {fileID: -1631628248, guid: 8a9a760f95896c34689febc965510927, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1294302495
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1294302493}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1778676317, guid: 8a9a760f95896c34689febc965510927, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mObserverBehaviour: {fileID: 1294302494}
-  mHiddenRoot: {fileID: 0}
-  mTargetName: videomark
-  mDatasetName: Vuforia/Venator.xml
-  mCastedBehaviour: {fileID: 1294302494}
-  mMeshFilter: {fileID: 0}
-  mMeshRenderer: {fileID: 0}
 --- !u!114 &1294302496
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1294302493}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1778676317, guid: 8a9a760f95896c34689febc965510927, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mObserverBehaviour: {fileID: 1294302494}
-  mHiddenRoot: {fileID: 0}
-  mTargetName: videomark
-  mDatasetName: Vuforia/Venator.xml
-  mCastedBehaviour: {fileID: 1294302494}
-  mMeshFilter: {fileID: 0}
-  mMeshRenderer: {fileID: 0}
---- !u!114 &1294302497
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7081,7 +7015,7 @@ GameObject:
   - component: {fileID: 1425809203}
   - component: {fileID: 1425809202}
   - component: {fileID: 1425809201}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7098,7 +7032,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.9999999, y: 1.9999999, z: 1.9999999}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1646332536}
@@ -8894,9 +8828,21 @@ PrefabInstance:
       value: 1080
       objectReference: {fileID: 0}
     - target: {fileID: 7284892433915556115, guid: b9eeee0bf20240142af4ec7fb7763fcd, type: 3}
+      propertyPath: cam
+      value: 
+      objectReference: {fileID: 711761233}
+    - target: {fileID: 7284892433915556115, guid: b9eeee0bf20240142af4ec7fb7763fcd, type: 3}
+      propertyPath: autoDrive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7284892433915556115, guid: b9eeee0bf20240142af4ec7fb7763fcd, type: 3}
       propertyPath: resetPosition
       value: 
       objectReference: {fileID: 995060515}
+    - target: {fileID: 7284892433915556115, guid: b9eeee0bf20240142af4ec7fb7763fcd, type: 3}
+      propertyPath: planeMask.m_Bits
+      value: 64
+      objectReference: {fileID: 0}
     - target: {fileID: 8955661277345480790, guid: b9eeee0bf20240142af4ec7fb7763fcd, type: 3}
       propertyPath: terrain
       value: 
