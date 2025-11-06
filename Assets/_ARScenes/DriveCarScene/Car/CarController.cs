@@ -16,24 +16,24 @@ public class CarController : MonoBehaviour
 
     [SerializeField] Transform resetPosition;
 
-    // >>> NEW >>> ×Ô¶¯ÐÐÊ»£¨Ïà»úÖÐÐÄ Raycast£©Óë¾²Ö¹ãÐÖµ
+    // >>> NEW >>> ï¿½Ô¶ï¿½ï¿½ï¿½Ê»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Raycastï¿½ï¿½ï¿½ë¾²Ö¹ï¿½ï¿½Öµ
     [Header("Auto Drive (Raycast)")]
-    [SerializeField] bool autoDrive = false;            // ¹´Ñ¡ÆôÓÃ
-    [SerializeField] Camera cam;                        // Ö÷Ïà»ú/ARCamera
-    [SerializeField] LayerMask planeMask;               // Ö»¹´Í¸Ã÷Æ½Ãæ²ã
+    [SerializeField] bool autoDrive = false;            // ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½
+    [SerializeField] Camera cam;                        // ï¿½ï¿½ï¿½ï¿½ï¿½/ARCamera
+    [SerializeField] LayerMask planeMask;               // Ö»ï¿½ï¿½Í¸ï¿½ï¿½Æ½ï¿½ï¿½ï¿½
     [SerializeField] float maxRayDistance = 1000f;
     [SerializeField] float chassisHeight = 0.2f;
-    [SerializeField] float arriveDistance = 0.2f;       // µ½µããÐÖµ£¨Ô­ÓÐ¿¿½üÊ±¼õËÙ£©
+    [SerializeField] float arriveDistance = 0.2f;       // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½Ô­ï¿½Ð¿ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ù£ï¿½
     [SerializeField] float steerResponse = 1.0f;
     [SerializeField] float cruiseSpeedThreshold = 1.2f;
 
-    // ¡ª¡ª ÐÂÔö¡°¾²Ö¹ãÐÖµ¡±£¨±ÜÃâ¶¶¶¯/Ô­µØÐ¡¶¯×÷£©¡ª¡ª
-    [SerializeField] float deadZoneDistance = 0.75f;    // ¾àÀëÐ¡ÓÚ´ËÖµÔòÍêÈ«²»¶¯
-    [SerializeField] float deadZoneAngleDeg = 5f;       // ½Ç¶ÈÐ¡ÓÚ´ËÖµÔò²»×ªÏò
-    [SerializeField] float deadZoneDamping = 0.5f;     // ½øÈë¾²Ö¹ÇøÊ±¶îÍâ×èÄá
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¹ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½â¶¶ï¿½ï¿½/Ô­ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    [SerializeField] float deadZoneDistance = 0.75f;    // ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½Ú´ï¿½Öµï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½
+    [SerializeField] float deadZoneAngleDeg = 5f;       // ï¿½Ç¶ï¿½Ð¡ï¿½Ú´ï¿½Öµï¿½ï¿½×ªï¿½ï¿½
+    [SerializeField] float deadZoneDamping = 0.5f;     // ï¿½ï¿½ï¿½ë¾²Ö¹ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     // <<< NEW <<<
 
-    Vector3 targetPosition; // ÃüÖÐµã
+    Vector3 targetPosition; // ï¿½ï¿½ï¿½Ðµï¿½
     bool hasTarget = false;
 
     void Start()
@@ -62,12 +62,12 @@ public class CarController : MonoBehaviour
         }
     }
 
-    // >>> NEW >>> ½öÐÂÔöµÄ Update£¬²»¸ÄÔ­ÓÐ·½·¨
+    // >>> NEW >>> ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Updateï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô­ï¿½Ð·ï¿½ï¿½ï¿½
     void Update()
     {
         if (!autoDrive || cam == null) return;
 
-        // ´ÓÆÁÄ»ÖÐÐÄ·¢ÉäÉäÏß
+        // ï¿½ï¿½ï¿½ï¿½Ä»ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
         if (Physics.Raycast(ray, out RaycastHit hit, maxRayDistance, planeMask))
         {
@@ -89,31 +89,31 @@ public class CarController : MonoBehaviour
             return;
         }
 
-        // ½«ÃüÖÐµã×ª»»³É acceleration / steering
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½×ªï¿½ï¿½ï¿½ï¿½ acceleration / steering
         Vector3 pos = transform.position;
         Vector3 to = targetPosition - pos;
         to.y = 0f;
 
         float dist = to.magnitude;
 
-        // ¼ÆËãÓÐ·ûºÅ¼Ð½Ç£¨ÓÃÓÚ×ªÏò£©
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Ð·ï¿½ï¿½Å¼Ð½Ç£ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½
         Vector3 forward = transform.forward; forward.y = 0f; forward.Normalize();
         Vector3 dir = (dist > 0.0001f) ? to.normalized : forward;
         float angle = Vector3.SignedAngle(forward, dir, Vector3.up);
 
-        // ¡ª¡ª ºËÐÄ£º¾²Ö¹ãÐÖµ ¡ª¡ª ¾àÀëºÜÐ¡ÇÒ½Ç¶ÈºÜÐ¡ ¡ú ÍêÈ«²»¶¯£¬ÇÒÔö¼Ó×èÄáÈÃËüÎÈ×¡
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½Ö¹ï¿½ï¿½Öµ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½Ò½Ç¶Èºï¿½Ð¡ ï¿½ï¿½ ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¡
         if (dist <= deadZoneDistance && Mathf.Abs(angle) <= deadZoneAngleDeg)
         {
             acceleration = 0f;
             steering = 0f;
             if (brakeLights) brakeLights.intensity = 0.8f;
 
-            // ÇáÎ¢É²Í£/×èÄá£¬±ÜÃâÐ¡·ùÆ¯ÒÆ
-            rb.velocity = Vector3.Lerp(rb.velocity, Vector3.zero, deadZoneDamping * Time.deltaTime);
+            // ï¿½ï¿½Î¢É²Í£/ï¿½ï¿½ï¿½á£¬ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½Æ¯ï¿½ï¿½
+            rb.linearVelocity = Vector3.Lerp(rb.linearVelocity, Vector3.zero, deadZoneDamping * Time.deltaTime);
             return;
         }
 
-        // ¡ª¡ª ·Ç¾²Ö¹Çø£ºÕý³£×ªÏòÓëÓÍÃÅ ¡ª¡ª 
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½Ç¾ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 
         if (dist > 0.0001f)
         {
             float steerCmd = Mathf.Clamp(
@@ -127,7 +127,7 @@ public class CarController : MonoBehaviour
             steering = 0f;
         }
 
-        float currentSpeed = rb.velocity.magnitude;
+        float currentSpeed = rb.linearVelocity.magnitude;
         if (dist > arriveDistance * 2f)
         {
             acceleration = (currentSpeed > cruiseSpeedThreshold) ? 0.3f : 1f;
@@ -140,7 +140,7 @@ public class CarController : MonoBehaviour
         }
         else
         {
-            acceleration = 0f; // µ½µã²»ÔÙ¼ÓËÙ
+            acceleration = 0f; // ï¿½ï¿½ï¿½ã²»ï¿½Ù¼ï¿½ï¿½ï¿½
             if (brakeLights) brakeLights.intensity = 0.8f;
         }
     }
