@@ -6414,6 +6414,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6870787552545767747, guid: ef5928c0c4b409e4ca20e33a46b79208, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1008279217}
+    - targetCorrespondingSourceObject: {fileID: 6870787552545767747, guid: ef5928c0c4b409e4ca20e33a46b79208, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1008279218}
   m_SourcePrefab: {fileID: 100100000, guid: ef5928c0c4b409e4ca20e33a46b79208, type: 3}
 --- !u!4 &1008279211 stripped
 Transform:
@@ -6759,6 +6762,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6870787552545767747, guid: ef5928c0c4b409e4ca20e33a46b79208, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1294302498}
+    - targetCorrespondingSourceObject: {fileID: 6870787552545767747, guid: ef5928c0c4b409e4ca20e33a46b79208, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1294302499}
   m_SourcePrefab: {fileID: 100100000, guid: ef5928c0c4b409e4ca20e33a46b79208, type: 3}
 --- !u!4 &1294302492 stripped
 Transform:
@@ -8193,18 +8199,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5415593351461394323, guid: c57fc7281cae8d244a9d2cea49217343, type: 3}
   m_PrefabInstance: {fileID: 5924894840514862591}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1883986029}
-  - component: {fileID: 1883986030}
-  m_Layer: 0
-  m_Name: MinigameScene
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1883986029
+--- !u!4 &1883986029 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5787574203165845186, guid: c57fc7281cae8d244a9d2cea49217343, type: 3}
   m_PrefabInstance: {fileID: 5924894840514862591}
