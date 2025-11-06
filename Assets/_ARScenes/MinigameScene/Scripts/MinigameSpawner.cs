@@ -50,6 +50,9 @@ public class MinigameSpawner : MonoBehaviour
 
     void Update()
     {
+        // No hacer nada si el juego está pausado (game over)
+        if (Time.timeScale == 0f) return;
+        
         // Limpiar ataúdes que han cumplido su tiempo de vida
         CleanupExpiredCoffins();
     }
@@ -79,11 +82,18 @@ public class MinigameSpawner : MonoBehaviour
             spawnPosition.z + randomCircle.y
         );
         
-        // Spawn del ataúd
+            // Spawn del ataúd
         if (coffinPrefab != null)
         {
             GameObject newCoffin = Instantiate(coffinPrefab, finalSpawnPosition, Quaternion.identity, transform);
             newCoffin.name = "Coffin_" + Time.time;
+            
+            // Asegurar que el ataúd tenga el script de colisión
+            CoffinCollision coffinCollision = newCoffin.GetComponent<CoffinCollision>();
+            if (coffinCollision == null)
+            {
+                coffinCollision = newCoffin.AddComponent<CoffinCollision>();
+            }
             
             CoffinData coffinData = new CoffinData
             {
@@ -215,6 +225,31 @@ public class MinigameSpawner : MonoBehaviour
                 Destroy(coffinData.coffin);
             }
             // Los vampiros seguirán persiguiendo aunque se destruya el ataúd
+        }
+        
+        activeCoffins.Clear();
+    }
+    
+    public void CleanupAllOnGameOver()
+    {
+        // Detener el spawn
+        if (spawnCoroutine != null)
+        {
+            StopCoroutine(spawnCoroutine);
+            spawnCoroutine = null;
+        }
+        
+        // Destruir todos los ataúdes y vampiros
+        foreach (CoffinData coffinData in activeCoffins)
+        {
+            if (coffinData.coffin != null)
+            {
+                Destroy(coffinData.coffin);
+            }
+            if (coffinData.vampire != null)
+            {
+                Destroy(coffinData.vampire);
+            }
         }
         
         activeCoffins.Clear();
