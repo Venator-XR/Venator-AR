@@ -29,9 +29,22 @@ public class MinigameManager : MonoBehaviour
         if (!timeCounter)
             Debug.LogError("TimeCounter not assigned!");
 
-        if (carController) carController.enabled = false;
+        if (carController)
+        {
+            carController.SetAimVisibility(false);
+            carController.enabled = false;
+        }
         if (startCanvas) startCanvas.SetActive(false);
-        if (timeCounter) timeCounter.SetActive(false);
+        if (timeCounter)
+        {
+            timeCounter.SetActive(false);
+            TimeCounter counter = timeCounter.GetComponent<TimeCounter>();
+            if (counter != null)
+            {
+                counter.Pause();
+                counter.Restart();
+            }
+        }
     }
 
     private void Start()
@@ -79,10 +92,16 @@ public class MinigameManager : MonoBehaviour
 
         // Activar contador y reiniciarlo
         timeCounter.SetActive(true);
-        timeCounter.GetComponent<TimeCounter>().Restart();
+        TimeCounter counter = timeCounter.GetComponent<TimeCounter>();
+        if (counter != null)
+        {
+            counter.Restart();
+            counter.StartCounter();
+        }
         yield return StartCoroutine(FadeCanvas(timeCounter, 0f, 1f, 0.8f));
 
         // Activar gameplay
+        carController.SetAimVisibility(true);
         carController.enabled = true;
         minigameSpawner.enabled = true;
     }
@@ -111,7 +130,19 @@ public class MinigameManager : MonoBehaviour
         }
 
         if (carController != null)
+        {
+            carController.SetAimVisibility(false);
             carController.enabled = false;
+        }
+
+        if (timeCounter != null)
+        {
+            TimeCounter counter = timeCounter.GetComponent<TimeCounter>();
+            if (counter != null)
+            {
+                counter.Pause();
+            }
+        }
 
         if (playableDirector != null)
         {
