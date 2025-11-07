@@ -13,6 +13,7 @@ public class MinigameManager : MonoBehaviour
     [Header("UI Elements")]
     [SerializeField] private GameObject startCanvas;   // Canvas principal para empezar
     [SerializeField] private GameObject timeCounter;   // Su hijo tiene un Canvas
+    [SerializeField] GameObject mainMenuBtn;
 
     private bool hasStartedCoroutine = false;
 
@@ -73,6 +74,8 @@ public class MinigameManager : MonoBehaviour
         // Fade out del canvas inicial
         yield return StartCoroutine(FadeCanvas(startCanvas, 1f, 0f, 0.5f));
         startCanvas.SetActive(false);
+
+        mainMenuBtn.SetActive(true);
 
         // Activar contador y reiniciarlo
         timeCounter.SetActive(true);

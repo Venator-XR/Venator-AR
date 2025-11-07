@@ -6,6 +6,8 @@ public class TimeCounter : MonoBehaviour
     public TMP_Text timerText;
     private float elapsedTime;
     private bool isPaused = true; // Start in paused state
+    public int minutes;
+    public int seconds;
 
     void Update()
     {
@@ -18,8 +20,9 @@ public class TimeCounter : MonoBehaviour
 
     private void UpdateTimerText()
     {
-        int minutes = Mathf.FloorToInt(elapsedTime / 60);
-        int seconds = Mathf.FloorToInt(elapsedTime % 60);
+        minutes = Mathf.FloorToInt(elapsedTime / 60);
+        seconds = Mathf.FloorToInt(elapsedTime % 60);
+
         timerText.text = $"{minutes:00}:{seconds:00}";
     }
 

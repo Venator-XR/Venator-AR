@@ -1,12 +1,16 @@
+using TMPro;
 using UnityEngine;
 
 public class GameOverManager : MonoBehaviour
 {
     [Header("UI References")]
-    [SerializeField] GameObject gameOverCanvas;
+    [SerializeField] private GameObject gameOverCanvas;
+    [SerializeField] private TextMeshProUGUI finalTimeTxt;
+    [SerializeField] private GameObject mainMenuBtn;
 
-    [Header("Scene Manager")]
-    [SerializeField] SceneManager sceneManager;
+    [Header("Scene Objects")]
+    [SerializeField] private GameObject mainMenuScene;     // tu “escena” de menú
+    [SerializeField] private GameObject minigameScene;     // tu “escena” del minijuego
 
     private bool isGameOver = false;
     private static GameOverManager instance;
@@ -16,9 +20,7 @@ public class GameOverManager : MonoBehaviour
         get
         {
             if (instance == null)
-            {
                 instance = FindObjectOfType<GameOverManager>();
-            }
             return instance;
         }
     }
@@ -26,153 +28,119 @@ public class GameOverManager : MonoBehaviour
     void Awake()
     {
         if (instance == null)
-        {
             instance = this;
-        }
         else if (instance != this)
         {
             Destroy(gameObject);
             return;
         }
 
-        // Asegurar que el canvas esté desactivado al inicio
         if (gameOverCanvas != null)
-        {
             gameOverCanvas.SetActive(false);
-        }
-    }
-
-    void Start()
-    {
-        // Buscar SceneManager si no está asignado
-        if (sceneManager == null)
-        {
-            sceneManager = FindObjectOfType<SceneManager>();
-            if (sceneManager == null)
-            {
-                Debug.LogWarning("SceneManager not found! Game Over will not be able to return to menu.");
-            }
-        }
     }
 
     public void GameOver()
     {
-        if (isGameOver) return; // Evitar múltiples llamadas
-
+        if (isGameOver) return;
         isGameOver = true;
 
-        // Limpiar todos los vampiros y ataúdes
-        CleanupAllEntities();
-
-        // Pausar el juego
+        // Pausar el tiempo de juego
         Time.timeScale = 0f;
 
-        // Mostrar el canvas de Game Over
+        // Limpiar vampiros, ataúdes, etc.
+        CleanupAllEntities();
+
+        // Mostrar el canvas
         if (gameOverCanvas != null)
-        {
             gameOverCanvas.SetActive(true);
-        }
-        else
+
+        // Mostrar el tiempo final
+        var tc = FindAnyObjectByType<TimeCounter>();
+        if (tc != null && finalTimeTxt != null)
         {
-            Debug.LogWarning("Game Over Canvas not assigned!");
+            int minutes = Mathf.FloorToInt(tc.minutes);
+            int seconds = Mathf.FloorToInt(tc.seconds);
+            finalTimeTxt.text = $"Has sobrevivido {minutes:00}:{seconds:00}";
         }
 
-        Debug.Log("Game Over!");
+        // Parar minijuego por completo
+        var minigameManager = FindAnyObjectByType<MinigameManager>();
+        if (minigameManager != null)
+            minigameManager.ResetMinigameState();
+
+        if (mainMenuBtn != null)
+            mainMenuBtn.SetActive(true);
+
+        Debug.Log("[GameOverManager] GAME OVER activado");
     }
 
     private void CleanupAllEntities()
     {
-        // Limpiar a través del MinigameSpawner si existe
-        MinigameSpawner spawner = FindObjectOfType<MinigameSpawner>();
+        MinigameSpawner spawner = FindAnyObjectByType<MinigameSpawner>();
         if (spawner != null)
-        {
             spawner.CleanupAllOnGameOver();
-        }
 
-        // También limpiar cualquier vampiro o ataúd que quede suelto
-        // Buscar todos los vampiros
-        VampireChase[] vampires = FindObjectsOfType<VampireChase>();
-        foreach (VampireChase vampire in vampires)
-        {
-            if (vampire != null && vampire.gameObject != null)
-            {
-                Destroy(vampire.gameObject);
-            }
-        }
+        foreach (var v in FindObjectsOfType<VampireChase>())
+            if (v != null) Destroy(v.gameObject);
 
-        // Buscar todos los ataúdes
-        CoffinCollision[] coffins = FindObjectsOfType<CoffinCollision>();
-        foreach (CoffinCollision coffin in coffins)
-        {
-            if (coffin != null && coffin.gameObject != null)
-            {
-                Destroy(coffin.gameObject);
-            }
-        }
-
-        // Buscar por nombre también por si acaso (solo objetos activos en la escena)
-        // Esto es una medida de seguridad adicional
-        GameObject[] allObjects = UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects();
-        foreach (GameObject rootObj in allObjects)
-        {
-            // Buscar recursivamente en hijos
-            SearchAndDestroyEntities(rootObj.transform);
-        }
+        foreach (var c in FindObjectsOfType<CoffinCollision>())
+            if (c != null) Destroy(c.gameObject);
     }
 
-    private void SearchAndDestroyEntities(Transform parent)
+    // -----------------------
+    // BOTÓN REINTENTAR
+    // -----------------------
+    public void OnRetryButtonClicked()
     {
-        // Verificar si este objeto es un ataúd o vampiro
-        if (parent.name.StartsWith("Coffin_") || parent.name.StartsWith("Vampire_"))
-        {
-            Destroy(parent.gameObject);
-            return;
-        }
-
-        // Buscar en hijos
-        for (int i = parent.childCount - 1; i >= 0; i--)
-        {
-            SearchAndDestroyEntities(parent.GetChild(i));
-        }
-    }
-
-    public void OnAccept()
-    {
-        // Reanudar el tiempo antes de volver al menú
         Time.timeScale = 1f;
 
-        // Resetear el estado del minijuego
-        var minigameManager = FindObjectOfType<MinigameManager>();
+        var minigameManager = FindAnyObjectByType<MinigameManager>();
         if (minigameManager != null)
         {
+            // reset completo y volver a flujo inicial
+            minigameManager.ResetMinigameState();
             minigameManager.RestartMinigameFlow();
         }
 
-        // Volver al menú principal
-        if (sceneManager != null)
-        {
-            sceneManager.BackToMenu();
-        }
-        else
-        {
-            Debug.LogError("SceneManager not found! Cannot return to menu.");
-        }
+        if (gameOverCanvas != null)
+            gameOverCanvas.SetActive(false);
 
-        // Resetear el estado interno
         isGameOver = false;
 
-        // Ocultar el canvas
-        if (gameOverCanvas != null)
-        {
-            gameOverCanvas.SetActive(false);
-        }
+        Debug.Log("[GameOverManager] Reinicio del minijuego ejecutado");
     }
 
-
-    void OnDestroy()
+    // -----------------------
+    // BOTÓN MENÚ PRINCIPAL
+    // -----------------------
+    public void OnMainMenuButtonClicked()
     {
-        // Asegurar que el tiempo se reanude si el objeto se destruye
         Time.timeScale = 1f;
+
+        var minigameManager = FindAnyObjectByType<MinigameManager>();
+        if (minigameManager != null)
+            minigameManager.ResetMinigameState();
+
+        if (minigameScene != null)
+            minigameScene.SetActive(false);
+
+        if (mainMenuScene != null)
+            mainMenuScene.SetActive(true);
+
+        if (gameOverCanvas != null)
+            gameOverCanvas.SetActive(false);
+
+        isGameOver = false;
+
+        Debug.Log("[GameOverManager] Vuelta al menú principal");
+    }
+
+    void OnDisable()
+    {
+        // Asegurar que no se quede pausado si se apaga el objeto
+        Time.timeScale = 1f;
+        isGameOver = false;
+        if (gameOverCanvas != null)
+            gameOverCanvas.SetActive(false);
     }
 }
-
