@@ -147,7 +147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9cd626e91af6f447bac9701237616f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chaseSpeed: 1
+  chaseSpeed: 0.4
   rotationSpeed: 10
   minDistanceToPlayer: 0
   playerTag: Car
