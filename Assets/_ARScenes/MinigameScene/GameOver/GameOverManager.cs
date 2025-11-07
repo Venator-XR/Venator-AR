@@ -4,14 +4,13 @@ public class GameOverManager : MonoBehaviour
 {
     [Header("UI References")]
     [SerializeField] GameObject gameOverCanvas;
-    [SerializeField] UnityEngine.UI.Button acceptButton;
-    
+
     [Header("Scene Manager")]
     [SerializeField] SceneManager sceneManager;
-    
+
     private bool isGameOver = false;
     private static GameOverManager instance;
-    
+
     public static GameOverManager Instance
     {
         get
@@ -23,7 +22,7 @@ public class GameOverManager : MonoBehaviour
             return instance;
         }
     }
-    
+
     void Awake()
     {
         if (instance == null)
@@ -35,14 +34,14 @@ public class GameOverManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        
+
         // Asegurar que el canvas esté desactivado al inicio
         if (gameOverCanvas != null)
         {
             gameOverCanvas.SetActive(false);
         }
     }
-    
+
     void Start()
     {
         // Buscar SceneManager si no está asignado
@@ -54,30 +53,20 @@ public class GameOverManager : MonoBehaviour
                 Debug.LogWarning("SceneManager not found! Game Over will not be able to return to menu.");
             }
         }
-        
-        // Configurar el botón de aceptar
-        if (acceptButton != null)
-        {
-            acceptButton.onClick.AddListener(OnAcceptButtonClicked);
-        }
-        else
-        {
-            Debug.LogWarning("Accept Button not assigned in GameOverManager!");
-        }
     }
-    
+
     public void GameOver()
     {
         if (isGameOver) return; // Evitar múltiples llamadas
-        
+
         isGameOver = true;
-        
+
         // Limpiar todos los vampiros y ataúdes
         CleanupAllEntities();
-        
+
         // Pausar el juego
         Time.timeScale = 0f;
-        
+
         // Mostrar el canvas de Game Over
         if (gameOverCanvas != null)
         {
@@ -87,10 +76,10 @@ public class GameOverManager : MonoBehaviour
         {
             Debug.LogWarning("Game Over Canvas not assigned!");
         }
-        
+
         Debug.Log("Game Over!");
     }
-    
+
     private void CleanupAllEntities()
     {
         // Limpiar a través del MinigameSpawner si existe
@@ -99,7 +88,7 @@ public class GameOverManager : MonoBehaviour
         {
             spawner.CleanupAllOnGameOver();
         }
-        
+
         // También limpiar cualquier vampiro o ataúd que quede suelto
         // Buscar todos los vampiros
         VampireChase[] vampires = FindObjectsOfType<VampireChase>();
@@ -110,7 +99,7 @@ public class GameOverManager : MonoBehaviour
                 Destroy(vampire.gameObject);
             }
         }
-        
+
         // Buscar todos los ataúdes
         CoffinCollision[] coffins = FindObjectsOfType<CoffinCollision>();
         foreach (CoffinCollision coffin in coffins)
@@ -120,7 +109,7 @@ public class GameOverManager : MonoBehaviour
                 Destroy(coffin.gameObject);
             }
         }
-        
+
         // Buscar por nombre también por si acaso (solo objetos activos en la escena)
         // Esto es una medida de seguridad adicional
         GameObject[] allObjects = UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects();
@@ -130,7 +119,7 @@ public class GameOverManager : MonoBehaviour
             SearchAndDestroyEntities(rootObj.transform);
         }
     }
-    
+
     private void SearchAndDestroyEntities(Transform parent)
     {
         // Verificar si este objeto es un ataúd o vampiro
@@ -139,19 +128,26 @@ public class GameOverManager : MonoBehaviour
             Destroy(parent.gameObject);
             return;
         }
-        
+
         // Buscar en hijos
         for (int i = parent.childCount - 1; i >= 0; i--)
         {
             SearchAndDestroyEntities(parent.GetChild(i));
         }
     }
-    
-    private void OnAcceptButtonClicked()
+
+    public void OnAccept()
     {
         // Reanudar el tiempo antes de volver al menú
         Time.timeScale = 1f;
-        
+
+        // Resetear el estado del minijuego
+        var minigameManager = FindObjectOfType<MinigameManager>();
+        if (minigameManager != null)
+        {
+            minigameManager.RestartMinigameFlow();
+        }
+
         // Volver al menú principal
         if (sceneManager != null)
         {
@@ -161,17 +157,18 @@ public class GameOverManager : MonoBehaviour
         {
             Debug.LogError("SceneManager not found! Cannot return to menu.");
         }
-        
-        // Resetear el estado
+
+        // Resetear el estado interno
         isGameOver = false;
-        
+
         // Ocultar el canvas
         if (gameOverCanvas != null)
         {
             gameOverCanvas.SetActive(false);
         }
     }
-    
+
+
     void OnDestroy()
     {
         // Asegurar que el tiempo se reanude si el objeto se destruye
