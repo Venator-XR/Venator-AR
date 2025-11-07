@@ -7,19 +7,21 @@ public class MinigameSpawner : MonoBehaviour
     [Header("Models")]
     [SerializeField] GameObject coffinPrefab;
     [SerializeField] GameObject vampirePrefab;
-    
+
     [Header("Spawn Settings")]
-    [SerializeField] Vector3 spawnPosition = Vector3.zero;
-    [SerializeField] float coffinSpawnInterval = 5f; // Cada cuántos segundos aparece un ataúd
-    [SerializeField] float vampireSpawnDelay = 1f; // Tiempo después del ataúd para spawnear vampiro
-    [SerializeField] float coffinLifetime = 10f; // Tiempo antes de que desaparezca el ataúd
+    [SerializeField] Transform spawnPosition;
+    [SerializeField] float coffinSpawnInterval = 3f;
+    [SerializeField] float vampireSpawnDelay = 2.5f;
+    [SerializeField] float coffinLifetime = 5f;
     [SerializeField] bool autoDetectCarHeight = true;
     [SerializeField] float manualSpawnHeight = 0.2f;
-    [SerializeField] float spawnRadius = 5f; // Radio aleatorio para spawnear ataúdes
-    
+
+    // 🔸 NUEVO: Tamaño del rectángulo de spawn (X = ancho, Y = largo)
+    [SerializeField] Vector2 spawnRectangleSize = new Vector2(10f, 10f);
+
     private List<CoffinData> activeCoffins = new List<CoffinData>();
     private Coroutine spawnCoroutine;
-    
+
     private class CoffinData
     {
         public GameObject coffin;
@@ -29,31 +31,23 @@ public class MinigameSpawner : MonoBehaviour
 
     void OnEnable()
     {
-        // Limpiar objetos anteriores
         CleanupAllObjects();
-        
-        // Iniciar el spawn continuo
         spawnCoroutine = StartCoroutine(ContinuousSpawn());
     }
 
     void OnDisable()
     {
-        // Detener el spawn
         if (spawnCoroutine != null)
         {
             StopCoroutine(spawnCoroutine);
             spawnCoroutine = null;
         }
-        
         CleanupAllObjects();
     }
 
     void Update()
     {
-        // No hacer nada si el juego está pausado (game over)
         if (Time.timeScale == 0f) return;
-        
-        // Limpiar ataúdes que han cumplido su tiempo de vida
         CleanupExpiredCoffins();
     }
 
@@ -61,52 +55,40 @@ public class MinigameSpawner : MonoBehaviour
     {
         while (true)
         {
-            // Spawnear un nuevo ataúd
             SpawnCoffinAndVampire();
-            
-            // Esperar el intervalo antes del siguiente spawn
             yield return new WaitForSeconds(coffinSpawnInterval);
         }
     }
 
     private void SpawnCoffinAndVampire()
-    {
-        // Obtener la altura del Car para spawnear a la misma altura
-        float spawnHeight = GetCarHeight();
-        
-        // Posición aleatoria alrededor del punto de spawn
-        Vector2 randomCircle = Random.insideUnitCircle * spawnRadius;
+    {   
+        // 🔸 AHORA EL SPAWN ES RECTANGULAR
+        float randomX = Random.Range(-spawnRectangleSize.x / 2f, spawnRectangleSize.x / 2f);
+        float randomZ = Random.Range(-spawnRectangleSize.y / 2f, spawnRectangleSize.y / 2f);
         Vector3 finalSpawnPosition = new Vector3(
-            spawnPosition.x + randomCircle.x, 
-            spawnHeight, 
-            spawnPosition.z + randomCircle.y
+            spawnPosition.position.x + randomX,
+            spawnPosition.position.y,
+            spawnPosition.position.z + randomZ
         );
-        
-            // Spawn del ataúd
+
         if (coffinPrefab != null)
         {
             GameObject newCoffin = Instantiate(coffinPrefab, finalSpawnPosition, Quaternion.identity, transform);
             newCoffin.name = "Coffin_" + Time.time;
-            
-            // Asegurar que el ataúd tenga el script de colisión
+
             CoffinCollision coffinCollision = newCoffin.GetComponent<CoffinCollision>();
-            if (coffinCollision == null)
-            {
-                coffinCollision = newCoffin.AddComponent<CoffinCollision>();
-            }
-            
+            if (coffinCollision == null) coffinCollision = newCoffin.AddComponent<CoffinCollision>();
+
             CoffinData coffinData = new CoffinData
             {
                 coffin = newCoffin,
                 vampire = null,
                 spawnTime = Time.time
             };
-            
+
             activeCoffins.Add(coffinData);
-            
-            Debug.Log("Coffin spawned at position: " + finalSpawnPosition + " (Car height: " + spawnHeight + ")");
-            
-            // Spawnear vampiro después del delay
+            Debug.Log("Coffin spawned at position: " + finalSpawnPosition);
+
             StartCoroutine(SpawnVampireForCoffin(coffinData, finalSpawnPosition));
         }
         else
@@ -162,57 +144,67 @@ public class MinigameSpawner : MonoBehaviour
             {
                 if (coffinData.coffin != null)
                 {
-                    Destroy(coffinData.coffin);
+                    Animator coffinAnimator = coffinData.coffin.GetComponentInChildren<Animator>();
+                    ParticleSystem ps = coffinData.coffin.GetComponent<ParticleSystem>();
+                    if (coffinAnimator != null)
+                    {
+                        coffinAnimator.SetTrigger("CloseCoffin");
+                    }
+                    if (ps != null)
+                    {
+                        // Reproducir las partículas 0.5 segundos después de activar la animación
+                        IEnumerator PlayParticlesWithDelay()
+                        {
+                            yield return new WaitForSeconds(0.5f);
+                            if (ps != null)
+                            {
+                                // Stop original so it doesn't play attached to the coffin
+                                ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+
+                                // Clone the particle GameObject so it can live independently after the coffin is destroyed
+                                GameObject psCloneGO = Instantiate(ps.gameObject, ps.transform.position, ps.transform.rotation);
+                                psCloneGO.transform.SetParent(null);
+                                ParticleSystem psClone = psCloneGO.GetComponent<ParticleSystem>();
+
+                                if (psClone != null)
+                                {
+                                    var mainClone = psClone.main;
+                                    mainClone.duration = 0.9f;
+                                    psClone.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+
+                                    // Match the coffin destroy delay used below (Destroy(coffinData.coffin, 1.5f))
+                                    float destroyDelay = 1.5f;
+                                    // We already waited 0.5s before reaching this point in the outer coroutine,
+                                    // so wait the remaining time until the coffin is destroyed.
+                                    float alreadyWaited = 0.5f;
+                                    float remaining = Mathf.Max(0f, destroyDelay - alreadyWaited);
+
+                                    yield return new WaitForSeconds(remaining);
+
+                                    // Play the detached particle system after the coffin has been destroyed
+                                    psClone.Play();
+
+                                    // Compute an approximate lifetime to destroy the particle GameObject afterwards
+                                    float startLifetime = 0.0f;
+                                    var sl = mainClone.startLifetime;
+                                    if (sl.mode == ParticleSystemCurveMode.Constant)
+                                        startLifetime = sl.constant;
+                                    else
+                                        startLifetime = sl.constantMax; // fallback for curve modes
+
+                                    float lifeTime = mainClone.duration + startLifetime;
+                                    Destroy(psCloneGO, lifeTime + 0.1f);
+                                }
+                            }
+                        }
+                        StartCoroutine(PlayParticlesWithDelay());
+                    }
+                    Destroy(coffinData.coffin, 1.5f);
                 }
                 // El vampiro sigue vivo y persiguiendo
                 activeCoffins.RemoveAt(i);
             }
         }
-    }
-
-    private float GetCarHeight()
-    {
-        if (!autoDetectCarHeight)
-        {
-            return manualSpawnHeight;
-        }
-        
-        // Buscar el Car por tag
-        GameObject car = GameObject.FindGameObjectWithTag("Car");
-        if (car == null)
-        {
-            // Buscar por nombre
-            car = GameObject.Find("Car");
-        }
-        
-        if (car != null)
-        {
-            float carHeight = car.transform.position.y;
-            return carHeight;
-        }
-        
-        // Buscar CarController
-        CarController carController = FindObjectOfType<CarController>();
-        if (carController != null)
-        {
-            float carHeight = carController.transform.position.y;
-            return carHeight;
-        }
-        
-        // Buscar en DriveCarScene
-        GameObject driveCarScene = GameObject.Find("DriveCarScene");
-        if (driveCarScene != null)
-        {
-            Transform carTransform = driveCarScene.transform.Find("Car");
-            if (carTransform != null)
-            {
-                float carHeight = carTransform.position.y;
-                return carHeight;
-            }
-        }
-        
-        // Si no se encuentra, usar altura manual
-        return manualSpawnHeight;
     }
 
     private void CleanupAllObjects()

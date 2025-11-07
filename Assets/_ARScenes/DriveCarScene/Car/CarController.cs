@@ -143,6 +143,10 @@ public class CarController : MonoBehaviour
             acceleration = 0f; // ���㲻�ټ���
             if (brakeLights) brakeLights.intensity = 0.8f;
         }
+
+        Vector3 localPos = transform.localPosition;
+        localPos.y = 0; // la altura fija del plano base
+        transform.localPosition = localPos;
     }
     // <<< NEW <<<
 
