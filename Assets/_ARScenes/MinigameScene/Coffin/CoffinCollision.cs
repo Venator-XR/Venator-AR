@@ -1,48 +1,51 @@
+using System.Collections;
 using UnityEngine;
 
 public class CoffinCollision : MonoBehaviour
 {
     [Header("Player Reference")]
-    [SerializeField] string playerTag = "Car";
-    
+    [SerializeField] private string playerTag = "Car";
+    [SerializeField] private float particleDuration = 0.5f;
+
     private bool hasTriggeredGameOver = false;
 
-    void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        // Verificar si el ataúd toca el coche
         if (hasTriggeredGameOver) return;
-        
-        if (other.CompareTag(playerTag) || other.name == "Car" || other.GetComponent<CarController>() != null)
-        {
-            hasTriggeredGameOver = true;
-            TriggerGameOver();
-        }
+        if (!collision.gameObject.CompareTag(playerTag)) return;
+
+        var carController = collision.gameObject.GetComponent<CarController>();
+        if (carController == null) return;
+
+        hasTriggeredGameOver = true;
+        StartCoroutine(HandleCollision(carController, collision.gameObject));
     }
-    
-    void OnCollisionEnter(Collision collision)
+
+    private IEnumerator HandleCollision(CarController carController, GameObject carObject)
     {
-        // También detectar colisiones físicas
-        if (hasTriggeredGameOver) return;
-        
-        GameObject other = collision.gameObject;
-        if (other.CompareTag(playerTag) || other.name == "Car" || other.GetComponent<CarController>() != null)
+        // Detener control del coche
+        carController.enabled = false;
+
+        // Intentar reproducir partículas si existen
+        var particles = carObject.GetComponent<ParticleSystem>();
+        if (particles != null)
         {
-            hasTriggeredGameOver = true;
-            TriggerGameOver();
+            particles.Play();
+            yield return new WaitForSeconds(particleDuration);
         }
+
+        TriggerGameOver();
     }
-    
+
     private void TriggerGameOver()
     {
-        GameOverManager gameOverManager = GameOverManager.Instance;
-        if (gameOverManager != null)
+        if (GameOverManager.Instance != null)
         {
-            gameOverManager.GameOver();
+            GameOverManager.Instance.GameOver();
         }
         else
         {
-            Debug.LogError("GameOverManager not found! Cannot trigger game over.");
+            Debug.LogWarning("GameOverManager not found! Cannot trigger game over.");
         }
     }
 }
-

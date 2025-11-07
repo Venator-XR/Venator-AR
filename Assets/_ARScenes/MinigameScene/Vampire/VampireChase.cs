@@ -1,199 +1,148 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class VampireChase : MonoBehaviour
 {
     [Header("Chase Settings")]
-    [SerializeField] float chaseSpeed = 2f;
-    [SerializeField] float rotationSpeed = 5f;
-    [SerializeField] float minDistanceToPlayer = 1f;
-    
+    [SerializeField] private float chaseSpeed = 2f;
+    [SerializeField] private float rotationSpeed = 5f;
+    [SerializeField] private float minDistanceToPlayer = 1f;
+
     [Header("Player Reference")]
-    [SerializeField] string playerTag = "Car";
-    
+    [SerializeField] private string playerTag = "Car";
+
     [Header("Rotation Fix")]
-    [Tooltip("Offset de rotación para corregir la orientación del modelo. Si está tumbado 90º, prueba con (-90, 0, 0) o (90, 0, 0)")]
-    [SerializeField] Vector3 rotationOffset = new Vector3(-90, 0, 0); // Por defecto -90 en X para corregir modelo tumbado
-    
-    private Transform playerTransform;
+    [Tooltip("Offset de rotación para corregir la orientación del modelo. Si está tumbado 90º, prueba (-90, 0, 0) o (90, 0, 0)")]
+    [SerializeField] private Vector3 rotationOffset = new Vector3(-90, 0, 0);
+
+    private Transform player;
     private Rigidbody rb;
-    private bool isChasing = false;
-    private bool hasTriggeredGameOver = false;
+    private bool hasTriggeredGameOver;
+
+    void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+        rb.useGravity = false;
+        rb.freezeRotation = true;
+    }
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        if (rb == null)
-        {
-            rb = gameObject.AddComponent<Rigidbody>();
-        }
-        
-        // Configurar Rigidbody para movimiento suave
-        rb.freezeRotation = true;
-        rb.useGravity = false;
-        
-        // Aplicar offset de rotación inicial si es necesario
         if (rotationOffset != Vector3.zero)
-        {
             transform.rotation = Quaternion.Euler(rotationOffset);
-        }
-        
-        FindPlayer();
+
+        LocatePlayer();
     }
 
     void Update()
     {
-        // No hacer nada si el juego está pausado (game over)
-        if (Time.timeScale == 0f) return;
-        
-        if (playerTransform == null)
+        if (Time.timeScale == 0f || hasTriggeredGameOver) return;
+
+        if (player == null)
         {
-            FindPlayer();
-            if (playerTransform == null)
-            {
-                return; // No player found yet, wait
-            }
+            LocatePlayer();
+            return;
         }
-        
-        if (!isChasing)
-        {
-            isChasing = true;
-        }
-        
-        ChasePlayer();
+
+        Chase();
     }
 
-    private void FindPlayer()
+    private void LocatePlayer()
     {
-        // Primero intentar por tag
-        GameObject player = GameObject.FindGameObjectWithTag(playerTag);
+        // Orden de prioridad: Tag → CarController → Nombre → Escena padre
+        if (GameObject.FindGameObjectWithTag(playerTag) is GameObject tagged)
+        {
+            player = tagged.transform;
+        }
+        else if (FindObjectOfType<CarController>() is CarController controller)
+        {
+            player = controller.transform;
+        }
+        else if (GameObject.Find("Car") is GameObject named)
+        {
+            player = named.transform;
+        }
+        else if (GameObject.Find("DriveCarScene")?.transform.Find("Car") is Transform sceneCar)
+        {
+            player = sceneCar;
+        }
+
         if (player != null)
+            Debug.Log($"[Vampire] Player found: {player.name}");
+    }
+
+    private void Chase()
+    {
+        Vector3 dir = player.position - transform.position;
+        float distance = dir.magnitude;
+
+        if (distance < 0.001f) return;
+
+        // Rotar hacia el jugador
+        Vector3 flatDir = new Vector3(dir.x, 0f, dir.z);
+        if (flatDir.sqrMagnitude > 0.001f)
         {
-            playerTransform = player.transform;
-            Debug.Log("Vampire found player: " + player.name);
-            return;
+            Quaternion lookRot = Quaternion.LookRotation(flatDir.normalized);
+            if (rotationOffset != Vector3.zero)
+                lookRot *= Quaternion.Euler(rotationOffset);
+            
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, rotationSpeed * Time.deltaTime);
         }
-        
-        // Buscar el coche por nombre si no tiene tag
-        GameObject car = GameObject.Find("Car");
-        if (car != null)
+
+        // Avanzar si no está demasiado cerca
+        if (distance > minDistanceToPlayer)
         {
-            playerTransform = car.transform;
-            Debug.Log("Vampire found player by name: Car");
-            return;
-        }
-        
-        // Buscar cualquier objeto con CarController
-        CarController carController = FindObjectOfType<CarController>();
-        if (carController != null)
-        {
-            playerTransform = carController.transform;
-            Debug.Log("Vampire found player via CarController");
-            return;
-        }
-        
-        // Si aún no se encuentra, buscar en DriveCarScene
-        GameObject driveCarScene = GameObject.Find("DriveCarScene");
-        if (driveCarScene != null)
-        {
-            Transform carTransform = driveCarScene.transform.Find("Car");
-            if (carTransform != null)
-            {
-                playerTransform = carTransform;
-                Debug.Log("Vampire found player in DriveCarScene");
-            }
+            Vector3 move = dir.normalized * chaseSpeed * Time.deltaTime;
+            move.y = 0f; // Mantener plano
+            rb.MovePosition(transform.position + move);
         }
     }
 
-    private void ChasePlayer()
+    private void OnCollisionEnter(Collision collision)
     {
-        if (playerTransform == null) return;
-        
-        Vector3 directionToPlayer = (playerTransform.position - transform.position);
-        float distanceToPlayer = directionToPlayer.magnitude;
-        
-        // Siempre mirar al jugador, incluso si está cerca
-        if (directionToPlayer.magnitude > 0.01f)
-        {
-            // Calcular dirección en el plano horizontal para la rotación
-            Vector3 horizontalDirection = directionToPlayer;
-            horizontalDirection.y = 0f;
-            
-            if (horizontalDirection.magnitude > 0.01f)
-            {
-                Quaternion baseRotation = Quaternion.LookRotation(horizontalDirection.normalized);
-                // Aplicar offset de rotación si existe (multiplicar para mantener la rotación base)
-                Quaternion targetRotation = rotationOffset != Vector3.zero 
-                    ? baseRotation * Quaternion.Euler(rotationOffset) 
-                    : baseRotation;
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-            }
-        }
-        
-        // Solo perseguir si está fuera del rango mínimo
-        if (distanceToPlayer > minDistanceToPlayer)
-        {
-            // Mover hacia el jugador
-            Vector3 moveDirection = directionToPlayer.normalized;
-            Vector3 movement = moveDirection * chaseSpeed * Time.deltaTime;
-            
-            // Mantener la altura del jugador
-            Vector3 newPosition = transform.position + movement;
-            if (playerTransform != null)
-            {
-                newPosition.y = playerTransform.position.y;
-            }
-            
-            // Usar Rigidbody para movimiento suave
-            rb.MovePosition(newPosition);
-        }
+        Debug.LogWarning("TOCADO");
+        if (hasTriggeredGameOver) return;
+        if (!collision.gameObject.CompareTag(playerTag)) return;
+
+        var carController = collision.gameObject.GetComponent<CarController>();
+        if (carController == null) return;
+
+        hasTriggeredGameOver = true;
+        StartCoroutine(HandleCollision(carController, collision.gameObject));
     }
 
-    void OnTriggerEnter(Collider other)
+    private IEnumerator HandleCollision(CarController carController, GameObject carObject)
     {
-        // Verificar si el vampiro toca el coche
-        if (hasTriggeredGameOver) return;
-        
-        if (other.CompareTag(playerTag) || other.name == "Car" || other.GetComponent<CarController>() != null)
+        // Detener control del coche
+        carController.enabled = false;
+        Debug.LogWarning("HUNDIDO?");
+        // Intentar reproducir partículas si existen
+        var particles = carObject.GetComponent<ParticleSystem>();
+        if (particles != null)
         {
-            hasTriggeredGameOver = true;
-            TriggerGameOver();
+            particles.Play();
+            yield return new WaitForSeconds(0.5f);
         }
+
+        TriggerGameOver();
     }
-    
-    void OnCollisionEnter(Collision collision)
+
+    private bool IsPlayer(GameObject obj)
     {
-        // También detectar colisiones físicas
-        if (hasTriggeredGameOver) return;
-        
-        GameObject other = collision.gameObject;
-        if (other.CompareTag(playerTag) || other.name == "Car" || other.GetComponent<CarController>() != null)
-        {
-            hasTriggeredGameOver = true;
-            TriggerGameOver();
-        }
+        return obj.CompareTag(playerTag) || obj.name == "Car" || obj.GetComponent<CarController>() != null;
     }
-    
+
     private void TriggerGameOver()
     {
-        GameOverManager gameOverManager = GameOverManager.Instance;
-        if (gameOverManager != null)
-        {
-            gameOverManager.GameOver();
-        }
-        else
-        {
-            Debug.LogError("GameOverManager not found! Cannot trigger game over.");
-        }
+        hasTriggeredGameOver = true;
+        GameOverManager.Instance?.GameOver();
     }
 
-    void OnDrawGizmosSelected()
+    private void OnDrawGizmosSelected()
     {
-        if (playerTransform != null)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(transform.position, playerTransform.position);
-        }
+        if (player == null) return;
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, player.position);
     }
 }
-
