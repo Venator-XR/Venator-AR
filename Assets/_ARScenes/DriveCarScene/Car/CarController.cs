@@ -5,6 +5,9 @@ public class CarController : MonoBehaviour
 {
     Rigidbody rb;
     [SerializeField] Light brakeLights;
+    [SerializeField] Transform aimMarker;
+
+    bool aimMarkerEnabled = false;
 
     [Header("Forces")]
     [SerializeField] float brakeForce = 0.4f;
@@ -36,6 +39,11 @@ public class CarController : MonoBehaviour
     Vector3 targetPosition; // ���е�
     bool hasTarget = false;
 
+    void Awake()
+    {
+        SetAimVisibility(false);
+    }
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -62,6 +70,11 @@ public class CarController : MonoBehaviour
         }
     }
 
+    void OnDisable()
+    {
+        SetAimVisibility(false);
+    }
+
     // >>> NEW >>> �������� Update������ԭ�з���
     void Update()
     {
@@ -76,10 +89,32 @@ public class CarController : MonoBehaviour
             hasTarget = true;
 
             Debug.DrawLine(ray.origin, hit.point, Color.green);
+
+            if (aimMarker != null)
+            {
+                if (aimMarkerEnabled)
+                {
+                    Vector3 aimPosition = hit.point;
+                    aimPosition.y += 0.01f;
+                    aimMarker.position = aimPosition;
+                    if (!aimMarker.gameObject.activeSelf)
+                    {
+                        aimMarker.gameObject.SetActive(true);
+                    }
+                }
+                else if (aimMarker.gameObject.activeSelf)
+                {
+                    aimMarker.gameObject.SetActive(false);
+                }
+            }
         }
         else
         {
             hasTarget = false;
+            if (aimMarker != null && aimMarker.gameObject.activeSelf)
+            {
+                aimMarker.gameObject.SetActive(false);
+            }
         }
 
         if (!hasTarget)
@@ -175,6 +210,17 @@ public class CarController : MonoBehaviour
         }
 
         rb.AddRelativeTorque(0f, steer * steerForce, 0f);
+    }
+
+    public void SetAimVisibility(bool enabled)
+    {
+        aimMarkerEnabled = enabled;
+        if (aimMarker == null) return;
+
+        if (!enabled && aimMarker.gameObject.activeSelf)
+        {
+            aimMarker.gameObject.SetActive(false);
+        }
     }
 
     public void SteerRight()
