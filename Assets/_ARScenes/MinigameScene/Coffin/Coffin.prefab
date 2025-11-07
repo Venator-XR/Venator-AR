@@ -5116,8 +5116,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3.9681988, y: 2.7460835, z: 9.70006}
-  m_Center: {x: 0, y: 0.12805176, z: 0.9545679}
+  m_Size: {x: 3.9681985, y: 2.7460835, z: 5.490403}
+  m_Center: {x: 0, y: 0.12805174, z: 3.059398}
 --- !u!114 &6082638732639657376
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5131,3 +5131,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerTag: Car
+  particleDuration: 0.5

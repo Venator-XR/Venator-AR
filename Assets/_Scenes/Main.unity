@@ -7796,6 +7796,14 @@ PrefabInstance:
       propertyPath: carTransform
       value: 
       objectReference: {fileID: 1441837731}
+    - target: {fileID: 779919361918045466, guid: 71341c9f9832129428da67648e8047ea, type: 3}
+      propertyPath: heightOffset
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 779919361918045466, guid: 71341c9f9832129428da67648e8047ea, type: 3}
+      propertyPath: heightReference
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3216011758743477674, guid: 71341c9f9832129428da67648e8047ea, type: 3}
       propertyPath: m_Name
       value: Trap
@@ -8950,6 +8958,14 @@ PrefabInstance:
       propertyPath: carTransform
       value: 
       objectReference: {fileID: 1441837731}
+    - target: {fileID: 779919361918045466, guid: 71341c9f9832129428da67648e8047ea, type: 3}
+      propertyPath: heightOffset
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 779919361918045466, guid: 71341c9f9832129428da67648e8047ea, type: 3}
+      propertyPath: heightReference
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3216011758743477674, guid: 71341c9f9832129428da67648e8047ea, type: 3}
       propertyPath: m_Name
       value: Trap
