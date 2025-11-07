@@ -68,6 +68,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: vampire
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 69055adafdd718044b7df3582c0ba6d9, type: 3}
+      propertyPath: m_TagString
+      value: Vampire
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -147,7 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9cd626e91af6f447bac9701237616f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chaseSpeed: 0.4
+  chaseSpeed: 1
   rotationSpeed: 10
   minDistanceToPlayer: 0
   playerTag: Car
