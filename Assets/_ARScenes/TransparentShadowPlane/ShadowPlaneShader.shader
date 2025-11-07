@@ -7,13 +7,14 @@ Shader "SP/InvisibleShadowReceiver_URP"
 
     SubShader
     {
-        Tags { "RenderType"="Transparent" "Queue"="Transparent" }
-        Blend SrcAlpha OneMinusSrcAlpha
+        Tags { "RenderType"="Opaque" "Queue"="Geometry+1" } // Dibujado antes que los transparentes
         ZWrite On
+        ZTest LEqual
+        ColorMask 0 // No dibuja color, pero sí escribe profundidad
 
         Pass
         {
-            Name "ForwardLit"
+            Name "ShadowOnly"
             Tags { "LightMode" = "UniversalForward" }
 
             HLSLPROGRAM
@@ -49,12 +50,11 @@ Shader "SP/InvisibleShadowReceiver_URP"
 
             half4 frag(Varyings i) : SV_Target
             {
-                // Sombra principal (0 = en sombra, 1 = iluminado)
                 float shadowAtten = MainLightRealtimeShadow(i.shadowCoord);
-                // Queremos que se vea solo la sombra (invisible al resto)
                 float shadowDarkness = 1.0 - shadowAtten;
-                half3 shadow = _ShadowColor.rgb * shadowDarkness;
-                return half4(shadow, shadowDarkness * _ShadowColor.a);
+
+                // Solo sombras (invisible pero con depth)
+                return half4(_ShadowColor.rgb * shadowDarkness, shadowDarkness * _ShadowColor.a);
             }
             ENDHLSL
         }
