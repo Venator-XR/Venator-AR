@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1066611659672796238, guid: b9eeee0bf20240142af4ec7fb7763fcd, type: 3}
+      propertyPath: m_Constraints
+      value: 80
+      objectReference: {fileID: 0}
     - target: {fileID: 3744675850250885991, guid: b9eeee0bf20240142af4ec7fb7763fcd, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.3
@@ -22,7 +26,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3744675850250885991, guid: b9eeee0bf20240142af4ec7fb7763fcd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 2.887
       objectReference: {fileID: 0}
     - target: {fileID: 3744675850250885991, guid: b9eeee0bf20240142af4ec7fb7763fcd, type: 3}
       propertyPath: m_LocalPosition.y
@@ -30,7 +34,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3744675850250885991, guid: b9eeee0bf20240142af4ec7fb7763fcd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -2.845
       objectReference: {fileID: 0}
     - target: {fileID: 3744675850250885991, guid: b9eeee0bf20240142af4ec7fb7763fcd, type: 3}
       propertyPath: m_LocalRotation.w
@@ -70,11 +74,46 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4763382341242581931, guid: b9eeee0bf20240142af4ec7fb7763fcd, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7284892433915556115, guid: b9eeee0bf20240142af4ec7fb7763fcd, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8955661277345480790, guid: b9eeee0bf20240142af4ec7fb7763fcd, type: 3}
     m_RemovedGameObjects:
     - {fileID: 3401778498367763077, guid: b9eeee0bf20240142af4ec7fb7763fcd, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4763382341242581931, guid: b9eeee0bf20240142af4ec7fb7763fcd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5242851849628626664}
   m_SourcePrefab: {fileID: 100100000, guid: b9eeee0bf20240142af4ec7fb7763fcd, type: 3}
+--- !u!1 &3093678352892101953 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4763382341242581931, guid: b9eeee0bf20240142af4ec7fb7763fcd, type: 3}
+  m_PrefabInstance: {fileID: 7562699439766435562}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &5242851849628626664
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3093678352892101953}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 57bc48190d9fd3f40b437d8ccd132485, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
